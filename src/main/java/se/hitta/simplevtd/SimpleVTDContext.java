@@ -7,24 +7,41 @@ import org.apache.commons.lang.StringUtils;
 
 import se.hitta.simplevtd.mappers.Mapper;
 
+import com.ximpleware.AutoPilot;
 import com.ximpleware.VTDNav;
 
+/**
+ * Use SimpleVTDContext to deserialize XML into entities.<br>
+ * A SimpleVTDContext is created using the factory method: {@link SimpleVTD#createContext}
+ * @author jebl01
+ *
+ */
 public class SimpleVTDContext
 {
 	private final Map<Class<?>, Mapper<?>> mappers;
 	private final VTDNav navigator;
 
-	public SimpleVTDContext(VTDNav navigator, Map<Class<?>, Mapper<?>> mappers)
+	SimpleVTDContext(VTDNav navigator, Map<Class<?>, Mapper<?>> mappers)
 	{
 		this.navigator = navigator;
 		this.mappers = mappers;
 	}
 	
+	/**
+	 * @return A {@link VTDNav} that can be used to traverse or parse the XML manually or to create an {@link AutoPilot}.
+	 */
 	public VTDNav getNavigator()
 	{
 		return navigator;
 	}
 	
+	/**
+	 * Deserialize the text value of the current node of the {@link VTDNav navigator} into the given type.
+	 * @param clazz The type to deserialize to. Note! a {@link Mapper} has to be registered for this type
+	 * @return The deserialized type
+	 * @see SimpleVTD#SimpleVTD()
+	 * @see SimpleVTD#registerMapper
+	 */
 	public<T> T deserialize(Class<T> clazz)
 	{
 		return deserialize(clazz, new String[]{}, null);
