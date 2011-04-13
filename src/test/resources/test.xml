@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<SoftboolXML_response type="query" error_code="0" databasename="SENDING" flowexit="bestHit=id">
+    <session>1921680201200000140871</session>
+    <records total="1" from="1" to="1" rank="" tablename="VBOOLWARECOMPANIES">
+        <record score="100.001">
+        	<test test="True">true</test>
+            <ID>
+                <value>1000656597</value>
+            </ID>
+            <VKIID>
+                <value>1000656597</value>
+                <subrecord tablename="VBOOLWAREAGENTS">
+                    <TYPE>RATINFO</TYPE>
+                    <DATA>&lt;RATINFO&gt;&lt;CEO&gt;Claes-Göran Bertil
+                        Lundqvist&lt;/CEO&gt;&lt;Turnover&gt;157515&lt;/Turnover&gt;&lt;TurnoverYear&gt;2009&lt;/TurnoverYear&gt;&lt;Profit&gt;11882&lt;/Profit&gt;&lt;Employees&gt;49&lt;/Employees&gt;&lt;RegNo&gt;5562679232&lt;/RegNo&gt;&lt;Link&gt;http://www.rating.se/detail/overview/5562679232&lt;/Link&gt;&lt;/RATINFO&gt;</DATA>
+                </subrecord>
+            </VKIID>
+            <LOCATIONNAME>Flinks Järn AB</LOCATIONNAME>
+            <NAMESUFFIX />
+            <STREETNAME>Lindhagensgatan</STREETNAME>
+            <STREETNO>133</STREETNO>
+            <STREETSUFFIX />
+            <ZIPCODE>11251</ZIPCODE>
+            <CITYNAME>STOCKHOLM</CITYNAME>
+            <COORD_NS>6581744.123</COORD_NS>
+            <COORD_EW>1625311.123</COORD_EW>
+            <COORDMAXDIFF>10</COORDMAXDIFF>
+            <PSTREETNAME>Box</PSTREETNAME>
+            <PSTREETNO>30014</PSTREETNO>
+            <PSTREETSUFFIX />
+            <PZIPCODE>10425</PZIPCODE>
+            <PCITYNAME>STOCKHOLM</PCITYNAME>
+            <TELEPHONES>
+                <PHONE>
+                    <AREACODE>08</AREACODE>
+                    <NETNUMBER>131210</NETNUMBER>
+                </PHONE>
+                <PHONE>
+                    <AREACODE>08</AREACODE>
+                    <NETNUMBER>6183393</NETNUMBER>
+                    <PHONETEXT>Telefax</PHONETEXT>
+                </PHONE>
+            </TELEPHONES>
+            <MOBILES />
+            <EMAIL>flinks@flinks.se</EMAIL>
+            <URL1>www.flinks.se</URL1>
+            <URL2 />
+            <LINK1 />
+            <LINK2 />
+            <NOREGNO>0</NOREGNO>
+            <NOENTRANCEPICTURE>0</NOENTRANCEPICTURE>
+            <GRAPHICALCODE>1</GRAPHICALCODE>
+            <HEADINGCODES>
+                <HEADING>36</HEADING>
+                <HEADING>525</HEADING>
+            </HEADINGCODES>
+            <HEADINGS>
+                <HEADING>Byggvaror &amp; Järnaffärer</HEADING>
+                <HEADING>Järnvaror</HEADING>
+            </HEADINGS>
+        </record>
+    </records>
+</SoftboolXML_response>
