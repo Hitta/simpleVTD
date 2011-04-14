@@ -10,9 +10,9 @@ import com.ximpleware.AutoPilot;
 
 public abstract class Mapper<T>
 {
-	public abstract T deserialize(SimpleVTDContext muppetContext, T defaultValue) throws Exception;
+	public abstract T deserialize(SimpleVTDContext simpleVTDContext, T defaultValue) throws Exception;
 	
-	public T deserializeAttribute(SimpleVTDContext muppetContext, String attribute, T defaultValue)
+	public T deserializeAttribute(SimpleVTDContext simpleVTDContext, String attribute, T defaultValue)
 	{
 		throw new NotImplementedException();
 	}

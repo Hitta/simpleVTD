@@ -8,9 +8,9 @@ public class BooleanMapper extends Mapper<Boolean>
 {
 
 	@Override
-	public Boolean deserialize(SimpleVTDContext muppetContext, Boolean defaultValue) throws Exception
+	public Boolean deserialize(SimpleVTDContext simpleVTDContext, Boolean defaultValue) throws Exception
 	{
-		VTDNav navigator = muppetContext.getNavigator();
+		VTDNav navigator = simpleVTDContext.getNavigator();
 
 		try
 		{
@@ -28,9 +28,9 @@ public class BooleanMapper extends Mapper<Boolean>
 	}
 
 	@Override
-	public Boolean deserializeAttribute(SimpleVTDContext muppetContext, String attribute, Boolean defaultValue)
+	public Boolean deserializeAttribute(SimpleVTDContext simpleVTDContext, String attribute, Boolean defaultValue)
 	{
-		VTDNav navigator = muppetContext.getNavigator();
+		VTDNav navigator = simpleVTDContext.getNavigator();
 
 		try
 		{

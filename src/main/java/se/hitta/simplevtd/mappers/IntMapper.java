@@ -7,9 +7,9 @@ import com.ximpleware.VTDNav;
 public class IntMapper extends Mapper<Integer>
 {
 	@Override
-	public Integer deserialize(SimpleVTDContext muppetContext, Integer defaultValue) throws Exception
+	public Integer deserialize(SimpleVTDContext simpleVTDContext, Integer defaultValue) throws Exception
 	{
-		VTDNav navigator = muppetContext.getNavigator();
+		VTDNav navigator = simpleVTDContext.getNavigator();
 
 		try
 		{
@@ -26,9 +26,9 @@ public class IntMapper extends Mapper<Integer>
 	}
 
 	@Override
-	public Integer deserializeAttribute(SimpleVTDContext muppetContext, String attribute, Integer defaultValue)
+	public Integer deserializeAttribute(SimpleVTDContext simpleVTDContext, String attribute, Integer defaultValue)
 	{
-		VTDNav navigator = muppetContext.getNavigator();
+		VTDNav navigator = simpleVTDContext.getNavigator();
 
 		try
 		{

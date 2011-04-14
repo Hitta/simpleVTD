@@ -8,9 +8,9 @@ public class DoubleMapper extends Mapper<Double>
 {
 
 	@Override
-	public Double deserialize(SimpleVTDContext muppetContext, Double defaultValue) throws Exception
+	public Double deserialize(SimpleVTDContext simpleVTDContext, Double defaultValue) throws Exception
 	{
-		VTDNav navigator = muppetContext.getNavigator();
+		VTDNav navigator = simpleVTDContext.getNavigator();
 
 		try
 		{
@@ -27,9 +27,9 @@ public class DoubleMapper extends Mapper<Double>
 	}
 
 	@Override
-	public Double deserializeAttribute(SimpleVTDContext muppetContext, String attribute, Double defaultValue)
+	public Double deserializeAttribute(SimpleVTDContext simpleVTDContext, String attribute, Double defaultValue)
 	{
-		VTDNav navigator = muppetContext.getNavigator();
+		VTDNav navigator = simpleVTDContext.getNavigator();
 
 		try
 		{

@@ -7,9 +7,9 @@ import com.ximpleware.VTDNav;
 public class StringMapper extends Mapper<String>
 {
 	@Override
-	public String deserialize(SimpleVTDContext muppetContext, String defaultValue) throws Exception
+	public String deserialize(SimpleVTDContext simpleVTDContext, String defaultValue) throws Exception
 	{
-		VTDNav navigator = muppetContext.getNavigator();
+		VTDNav navigator = simpleVTDContext.getNavigator();
 
 		try
 		{
@@ -26,9 +26,9 @@ public class StringMapper extends Mapper<String>
 	}
 
 	@Override
-	public String deserializeAttribute(SimpleVTDContext muppetContext, String attribute, String defaultValue)
+	public String deserializeAttribute(SimpleVTDContext simpleVTDContext, String attribute, String defaultValue)
 	{
-		VTDNav navigator = muppetContext.getNavigator();
+		VTDNav navigator = simpleVTDContext.getNavigator();
 
 		try
 		{
