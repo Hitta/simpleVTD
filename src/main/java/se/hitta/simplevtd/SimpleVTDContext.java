@@ -13,8 +13,8 @@ import com.ximpleware.VTDNav;
 /**
  * Use SimpleVTDContext to deserialize XML into entities.<br>
  * A SimpleVTDContext is created using the factory method: {@link SimpleVTD#createContext}
+ * 
  * @author jebl01
- *
  */
 public class SimpleVTDContext
 {
@@ -36,10 +36,9 @@ public class SimpleVTDContext
 	}
 	
 	/**
-	 * Deserialize the text value of the current node of the {@link VTDNav navigator} into the given type.
+	 * Deserialize the text value of the current element of the {@link VTDNav navigator} into the given type.
 	 * @param clazz The type to deserialize to. Note! a {@link Mapper} has to be registered for this type
 	 * @return The deserialized type
-	 * @see SimpleVTD#SimpleVTD()
 	 * @see SimpleVTD#registerMapper
 	 */
 	public<T> T deserialize(Class<T> clazz)
@@ -47,11 +46,48 @@ public class SimpleVTDContext
 		return deserialize(clazz, new String[]{}, null);
 	}
 	
+	/**
+	 * Deserialize the text value of the current element of the {@link VTDNav navigator} into the given type.
+	 * @param clazz The type to deserialize to. Note! a {@link Mapper} has to be registered for this type
+	 * @param defaultValue For built in mappers, the default value is returned in case of any error.
+	 * @return The deserialized type or the default value
+	 * @see SimpleVTD#registerMapper
+	 */
 	public<T> T deserialize(Class<T> clazz, T defaultValue)
 	{
 		return deserialize(clazz, new String[]{}, defaultValue);
 	}
 	
+	/**
+	 * Deserialize the text value of the given element (relative to the current {@link VTDNav navigator} position) into the given type.
+	 * @param clazz The type to deserialize to. Note! a {@link Mapper} has to be registered for this type
+	 * @param elementName This can be eiter the name of a child element to traverse into, or a path (like a simple XPath expression) to traverse into.<br>
+	 * If a path is provided, the elements should be separated with a forward slash "/". An attribute is denoted, the attribute name should be prefixed with a "@".
+	 * If a path is provided, the {@link VTDNav navigator} will be rewinded to the previous position before returning.
+	 * <p>
+	 * <b>Example</b>:
+	 * <pre>
+	 * {@code
+	 * <person gender="m">
+	 *    <name>John<name>
+	 *    <phone type="mobile">
+	 *       <number>12345</number>
+	 *    </phone>
+	 * <person>
+	 * }
+	 * </pre>
+	 * If you have the {@link VTDNav navigator} positioned on the {@code<person>} element this is how to:
+	 * <ul>
+	 * <li>Query the "gender" attribute: <b>"@gender"</b></li>
+	 * <li>Query the "name" element: <b>"name"</b></li>
+	 * <li>Query the "type" attribute of the "phone" element: <b>"phone/@type"</b></li>
+	 * <li>Query the "number" element of the "phone" element: <b>"phone/element"</b</li>
+	 * </ul>
+	 * </p>
+	 * @param defaultValue For built in mappers, the default value is returned in case of any error.
+	 * @return The deserialized type or the default value
+	 * @see SimpleVTD#registerMapper
+	 */
 	public<T> T deserialize(Class<T> clazz, String elementName, T defaultValue)
 	{
 		return deserialize(clazz, StringUtils.split(elementName, '/'), defaultValue);
