@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +22,7 @@ public class MappersTest
 	@BeforeClass
 	public static void before() throws IOException
 	{
+		simpleVTD.registerMapper(Phone.class, new PhoneMapper());
 		xml = FileUtils.readFileToByteArray(new File(MappersTest.class.getClassLoader().getResource("test.xml").getFile()));
 	}
 	
@@ -185,5 +187,34 @@ public class MappersTest
 		boolean actual = context.deserialize(Boolean.class, "records/record/test/@test", false);
 		
 		assertTrue(actual);
+	}
+	
+	@Test
+	public void canMapCollection() throws Exception
+	{
+		SimpleVTDContext context = simpleVTD.createContext(xml);
+
+		Collection<Phone> phones = context.deserializeAll(Phone.class, "records/record/TELEPHONES/PHONE");
+		
+		assertEquals(2, phones.size());
+	}
+	
+	public static class Phone
+	{
+		public final String netNumber;
+
+		public Phone(String netNumber)
+		{
+			this.netNumber = netNumber;			
+		}
+	}
+	public static class PhoneMapper extends Mapper<Phone>
+	{
+		@Override
+		public Phone deserialize(SimpleVTDContext simpleVTDContext, Phone defaultValue) throws Exception
+		{
+			return new Phone(simpleVTDContext.deserialize(String.class, "NETNUMBER", StringUtils.EMPTY));
+		}
+		
 	}
 }
