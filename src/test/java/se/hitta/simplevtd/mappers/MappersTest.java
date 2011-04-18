@@ -196,7 +196,7 @@ public class MappersTest
 
 		Collection<Phone> phones = context.deserializeAll(Phone.class, "records/record/TELEPHONES/PHONE");
 		
-		assertEquals(2, phones.size());
+		assertEquals(3, phones.size());
 	}
 	
 	public static class Phone

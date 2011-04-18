@@ -41,6 +41,12 @@
                     <PHONETEXT>Telefax</PHONETEXT>
                 </PHONE>
             </TELEPHONES>
+            <TELEPHONES>
+                <PHONE>
+                    <AREACODE>08</AREACODE>
+                    <NETNUMBER>131210</NETNUMBER>
+                </PHONE>
+            </TELEPHONES>
             <MOBILES />
             <EMAIL>flinks@flinks.se</EMAIL>
             <URL1>www.flinks.se</URL1>
