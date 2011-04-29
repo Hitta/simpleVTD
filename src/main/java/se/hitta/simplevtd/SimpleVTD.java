@@ -9,6 +9,7 @@ import se.hitta.simplevtd.mappers.IntMapper;
 import se.hitta.simplevtd.mappers.LongMapper;
 import se.hitta.simplevtd.mappers.Mapper;
 import se.hitta.simplevtd.mappers.StringMapper;
+import se.hitta.simplevtd.mappers.MappersTest.PhoneListMapper;
 
 import com.ximpleware.VTDGen;
 
@@ -61,7 +62,7 @@ public class SimpleVTD
 
 		return this;
 	}
-
+	
 	/**
 	 * Create a mapping context. Note! the mapping context is not thread safe.
 	 * 

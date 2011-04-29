@@ -3,6 +3,7 @@ package se.hitta.simplevtd;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -23,11 +24,17 @@ public class SimpleVTDContext
 {
 	private final Map<Class<?>, Mapper<?>> mappers;
 	private final VTDNav navigator;
-
+	
+	/**
+	 * User extras to store information that has to be passed with the context.
+	 */
+	public final Map<String, Object> extras;
+	
 	SimpleVTDContext(VTDNav navigator, Map<Class<?>, Mapper<?>> mappers)
 	{
 		this.navigator = navigator;
 		this.mappers = mappers;
+		this.extras = new HashMap<String, Object>();
 	}
 
 	/**

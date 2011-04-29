@@ -1,9 +1,11 @@
 package se.hitta.simplevtd.mappers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
@@ -208,6 +210,18 @@ public class MappersTest
 			this.netNumber = netNumber;			
 		}
 	}
+	
+	public static class PhoneListMapper extends Mapper<Collection<Phone>>
+	{
+
+		@Override
+		public Collection<Phone> deserialize(SimpleVTDContext simpleVTDContext, Collection<Phone> defaultValue) throws Exception
+		{
+			return Arrays.asList(new Phone(simpleVTDContext.deserialize(String.class, "NETNUMBER", StringUtils.EMPTY)));
+		}
+		
+	}
+	
 	public static class PhoneMapper extends Mapper<Phone>
 	{
 		@Override
