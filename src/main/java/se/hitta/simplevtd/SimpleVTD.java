@@ -24,59 +24,55 @@ import com.ximpleware.VTDGen;
  * </ul>
  * Register your own custom mappers using {@link #registerMapper}.
  * 
- * @author jebl01
- * 
  */
-public class SimpleVTD
+public final class SimpleVTD
 {
-	private final Map<Class<?>, Mapper<?>> mappers = new HashMap<Class<?>, Mapper<?>>();
+    private final Map<Class<?>, Mapper<?>> mappers = new HashMap<Class<?>, Mapper<?>>();
 
-	/**
-	 * Creates a new thread safe SimpleVTD.
-	 */
-	public SimpleVTD()
-	{
-		mappers.put(String.class, new StringMapper());
-		mappers.put(Integer.class, new IntMapper());
-		mappers.put(Long.class, new LongMapper());
-		mappers.put(Double.class, new DoubleMapper());
-		mappers.put(Boolean.class, new BooleanMapper());
-	}
+    /**
+     * Creates a new thread safe SimpleVTD.
+     */
+    public SimpleVTD()
+    {
+        this.mappers.put(String.class, new StringMapper());
+        this.mappers.put(Integer.class, new IntMapper());
+        this.mappers.put(Long.class, new LongMapper());
+        this.mappers.put(Double.class, new DoubleMapper());
+        this.mappers.put(Boolean.class, new BooleanMapper());
+    }
 
-	/**
-	 * Register your own custom {@link Mapper mapper}. Mappers have to be
-	 * registered before a context that is dependent on them is created.
-	 * 
-	 * @param <T>
-	 *            A {@link Mapper mapper} can only be registered for the type
-	 *            the {@link Mapper mapper} handles
-	 * @param clazz
-	 *            The type to register the {@link Mapper mapper} for
-	 * @param mapper
-	 *            The {@link Mapper mapper} to register
-	 */
-	public synchronized <T> SimpleVTD registerMapper(Class<T> clazz, Mapper<T> mapper)
-	{
-		mappers.put(clazz, mapper);
+    /**
+     * Register your own custom {@link Mapper mapper}. Mappers have to be
+     * registered before a context that is dependent on them is created.
+     * 
+     * @param <T>
+     *            A {@link Mapper mapper} can only be registered for the type
+     *            the {@link Mapper mapper} handles
+     * @param clazz
+     *            The type to register the {@link Mapper mapper} for
+     * @param mapper
+     *            The {@link Mapper mapper} to register
+     */
+    public synchronized <T> SimpleVTD registerMapper(final Class<T> clazz, final Mapper<T> mapper)
+    {
+        this.mappers.put(clazz, mapper);
+        return this;
+    }
 
-		return this;
-	}
-	
-	/**
-	 * Create a mapping context. Note! the mapping context is not thread safe.
-	 * 
-	 * @param xml
-	 *            The XML to process as a byte array
-	 * @return A new {@link SimpleVTDContext}
-	 * @throws Exception
-	 *             in case of XML parse exceptions
-	 */
-	public SimpleVTDContext createContext(byte[] xml) throws Exception
-	{
-		final VTDGen vtdGen = new VTDGen();
-		vtdGen.setDoc(xml);
-		vtdGen.parse(false);
-
-		return new SimpleVTDContext(vtdGen.getNav(), mappers);
-	}
+    /**
+     * Create a mapping context. Note! the mapping context is not thread safe.
+     * 
+     * @param xml
+     *            The XML to process as a byte array
+     * @return A new {@link SimpleVTDContext}
+     * @throws Exception
+     *             in case of XML parse exceptions
+     */
+    public SimpleVTDContext createContext(final byte[] xml) throws Exception
+    {
+        final VTDGen vtdGen = new VTDGen();
+        vtdGen.setDoc(xml);
+        vtdGen.parse(false);
+        return new SimpleVTDContext(vtdGen.getNav(), this.mappers);
+    }
 }
