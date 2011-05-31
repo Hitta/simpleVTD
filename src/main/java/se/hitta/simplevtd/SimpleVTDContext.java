@@ -58,7 +58,7 @@ public class SimpleVTDContext
 	 */
 	public <T> T deserialize(Class<T> clazz)
 	{
-		return deserialize(clazz, new String[] {}, null);
+		return deserialize(clazz, new String[0], null);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class SimpleVTDContext
 	 */
 	public <T> T deserialize(Class<T> clazz, T defaultValue)
 	{
-		return deserialize(clazz, new String[] {}, defaultValue);
+		return deserialize(clazz, new String[0], defaultValue);
 	}
 
 	/**
