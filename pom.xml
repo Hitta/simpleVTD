@@ -4,6 +4,9 @@
     <artifactId>simpleVTD</artifactId>
     <packaging>jar</packaging>
     <version>3.0.0-SNAPSHOT</version>
+    <scm>
+        <developerConnection>scm:svn:http://scm.hitta.local/subversion/utveckling/services/Hitta.SimpleVTD/trunk/</developerConnection>
+    </scm>
     <parent>
         <groupId>se.hitta</groupId>
         <artifactId>pom-base</artifactId>
