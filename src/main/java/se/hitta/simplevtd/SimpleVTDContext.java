@@ -17,8 +17,7 @@ import com.ximpleware.VTDNav;
 
 /**
  * Use SimpleVTDContext to deserialize XML into entities.<br>
- * A SimpleVTDContext is created using the factory method:
- * {@link SimpleVTD#createContext}
+ * A SimpleVTDContext is created using the factory method: {@link SimpleVTD#createContext}
  */
 public final class SimpleVTDContext
 {
@@ -93,25 +92,21 @@ public final class SimpleVTDContext
      *            into.<br>
      *            If a path is provided, the elements should be separated with a
      *            forward slash "/". An attribute is denoted, the attribute name
-     *            should be prefixed with a "@". If a path is provided, the
-     *            {@link VTDNav navigator} will be rewinded to the previous
+     *            should be prefixed with a "@". If a path is provided, the {@link VTDNav navigator} will be rewinded to the previous
      *            position before returning.
      *            <p>
      *            <b>Example</b>:
      * 
-     *            <pre>
-     * {@code
+     *            <pre> {@code
      * <person gender="m">
      *    <name>John<name>
      *    <phone type="mobile">
      *       <number>12345</number>
      *    </phone>
      * <person>
-     * }
-     * </pre>
+     * } </pre>
      * 
-     *            If you have the {@link VTDNav navigator} positioned on the
-     *            {@code<person>} element this is how to:
+     *            If you have the {@link VTDNav navigator} positioned on the {@code<person>} element this is how to:
      *            <ul>
      *            <li>Query the "gender" attribute: <b>"@gender"</b></li>
      *            <li>Query the "name" element: <b>"name"</b></li>
@@ -152,10 +147,7 @@ public final class SimpleVTDContext
                     {
                         return doDeserialize(clazz, defaultValue);
                     }
-                    else
-                    {
-                        return deserialize(clazz, Arrays.copyOfRange(elementNames, 1, elementNames.length), defaultValue);
-                    }
+                    return deserialize(clazz, Arrays.copyOfRange(elementNames, 1, elementNames.length), defaultValue);
                 }
                 finally
                 {
@@ -189,8 +181,7 @@ public final class SimpleVTDContext
      *            <p>
      *            <b>Example</b>:
      * 
-     *            <pre>
-     * {@code
+     *            <pre> {@code
      * <person gender="m">
      *    <name>John<name>
      *    <phone type="mobile">
@@ -200,14 +191,11 @@ public final class SimpleVTDContext
      *       <number>54321</number>
      *    </phone>
      * <person>
-     * }
-     * </pre>
+     * } </pre>
      * 
-     *            With the {@link VTDNav navigator} positioned on the
-     *            {@code<person>} and with a registered {@link Mapper mapper}
-     *            for the type "Phone" the following code can be used to return
-     *            a collection with all phones:<br>
-     *            {@code Collection<Phone> phones =
+     *            With the {@link VTDNav navigator} positioned on the {@code<person>} and with a registered {@link Mapper mapper} for the type "Phone" the
+     *            following code can be used to return
+     *            a collection with all phones:<br> {@code Collection<Phone> phones =
      *            context.deserializeAll(Phone.class, "phone"); * }
      * @return A collection containing all deserialized elements, or an empty
      *         collection if no elements was found or if an error occurred.
@@ -275,9 +263,6 @@ public final class SimpleVTDContext
             final Mapper<T> mapper = (Mapper<T>)this.mappers.get(clazz);
             return mapper.deserialize(this, defaultValue);
         }
-        else
-        {
-            throw new IllegalArgumentException("No mapper found for type: " + clazz);
-        }
+        throw new IllegalArgumentException("No mapper found for type: " + clazz);
     }
 }
