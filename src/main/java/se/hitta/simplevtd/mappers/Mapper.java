@@ -19,7 +19,7 @@ public abstract class Mapper<T>
         {
             final VTDNav navigator = context.getNavigator();
             final int val = navigator.getText();
-            final String raw = (val == -1) ? null : navigator.toNormalizedString(val);
+            final String raw = (val == -1) ? null : navigator.toString(val).trim();
             return (raw == null) ? defaultValue : parse(raw);
         }
         catch(final NavException e)

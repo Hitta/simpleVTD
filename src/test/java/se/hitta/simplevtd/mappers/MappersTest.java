@@ -39,6 +39,16 @@ public class MappersTest
     }
 
     @Test
+    public void canMapMultilineString() throws Exception
+    {
+        SimpleVTDContext context = simpleVTD.createContext(xml);
+        String expected = "<RATINFO><CEO>Claes-Göran Bertil\n                        Lundqvist</CEO><Turnover>157515</Turnover><TurnoverYear>2009</TurnoverYear><Profit>11882</Profit><Employees>49</Employees><RegNo>5562679232</RegNo><Link>http://www.rating.se/detail/overview/5562679232</Link></RATINFO>";
+        String actual = context.deserialize(String.class, "records/record/VKIID/subrecord/DATA", StringUtils.EMPTY);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void willGetDefaultStringValue() throws Exception
     {
         SimpleVTDContext context = simpleVTD.createContext(xml);
