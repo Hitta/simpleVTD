@@ -2,9 +2,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>simpleVTD</artifactId>
     <packaging>jar</packaging>
-    <version>3.0.2-SNAPSHOT</version>
+    <version>3.0.2</version>
     <scm>
-        <developerConnection>scm:svn:http://scm.hitta.local/subversion/utveckling/services/Hitta.SimpleVTD/trunk/</developerConnection>
+        <developerConnection>scm:svn:http://scm.hitta.local/subversion/utveckling/services/Hitta.SimpleVTD/tags/3.0.2</developerConnection>
     </scm>
     <parent>
         <groupId>se.hitta</groupId>
