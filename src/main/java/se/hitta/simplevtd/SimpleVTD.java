@@ -1,5 +1,6 @@
 package se.hitta.simplevtd;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import com.ximpleware.VTDGen;
  */
 public final class SimpleVTD
 {
-    private final Map<Class<?>, Mapper<?>> mappers = new HashMap<Class<?>, Mapper<?>>();
+    private final Map<Type, Mapper<?>> mappers = new HashMap<Type, Mapper<?>>();
 
     /**
      * Creates a new thread safe SimpleVTD.

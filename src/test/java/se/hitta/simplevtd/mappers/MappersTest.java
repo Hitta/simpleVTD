@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
@@ -27,7 +26,7 @@ public class MappersTest
         simpleVTD.registerMapper(Phone.class, new PhoneMapper());
         xml = FileUtils.readFileToByteArray(new File(MappersTest.class.getClassLoader().getResource("test.xml").getFile()));
     }
-
+    
     @Test
     public void canMapString() throws Exception
     {
@@ -218,16 +217,6 @@ public class MappersTest
         public Phone(String netNumber)
         {
             this.netNumber = netNumber;
-        }
-    }
-
-    public static class PhoneListMapper extends Mapper<Collection<Phone>>
-    {
-
-        @Override
-        public Collection<Phone> deserialize(final SimpleVTDContext context, final Collection<Phone> defaultValue)
-        {
-            return Arrays.asList(new Phone(context.deserialize(String.class, "NETNUMBER", StringUtils.EMPTY)));
         }
     }
 

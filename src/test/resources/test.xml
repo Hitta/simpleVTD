@@ -31,7 +31,7 @@
             <PZIPCODE>10425</PZIPCODE>
             <PCITYNAME>STOCKHOLM</PCITYNAME>
             <TELEPHONES>
-                <PHONE>
+                <PHONE guard="test">
                     <AREACODE>08</AREACODE>
                     <NETNUMBER>131210</NETNUMBER>
                 </PHONE>
@@ -42,8 +42,8 @@
                 </PHONE>
             </TELEPHONES>
             <TELEPHONES>
-                <PHONE>
-                    <AREACODE>08</AREACODE>
+                <PHONE guard="test">
+                    <AREACODE>031</AREACODE>
                     <NETNUMBER>131210</NETNUMBER>
                 </PHONE>
             </TELEPHONES>
@@ -64,6 +64,17 @@
                 <HEADING>Byggvaror &amp; Järnaffärer</HEADING>
                 <HEADING>Järnvaror</HEADING>
             </HEADINGS>
+            <guardsTest old="true">
+            	<guarded guard="test">Nisse</guarded>
+            	<guarded guard="test2">Åsa</guarded>
+            	<guarded guard="test">Sven</guarded>
+            	<guarded>Erik</guarded>
+            </guardsTest>
+            <guardsTest guard="test3">
+            	<guarded>Åke</guarded>
+            	<guarded guard="test">Marie</guarded>
+            	<guarded>Ove</guarded>
+            </guardsTest>
         </record>
     </records>
 </SoftboolXML_response>

@@ -2,14 +2,14 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>simpleVTD</artifactId>
     <packaging>jar</packaging>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
     <scm>
         <developerConnection>scm:svn:http://scm.hitta.local/subversion/utveckling/services/Hitta.SimpleVTD/trunk/</developerConnection>
     </scm>
     <parent>
         <groupId>se.hitta</groupId>
         <artifactId>pom-base</artifactId>
-        <version>3.0.10</version>
+        <version>3.0.12</version>
     </parent>
     <dependencies>
         <dependency>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>se.hitta</groupId>
             <artifactId>pom-test</artifactId>
-            <version>3.0.10</version>
+            <version>3.0.12</version>
             <type>pom</type>
             <scope>test</scope>
         </dependency>

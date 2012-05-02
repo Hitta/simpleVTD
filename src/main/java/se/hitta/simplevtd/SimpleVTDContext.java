@@ -1,5 +1,6 @@
 package se.hitta.simplevtd;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +23,7 @@ import com.ximpleware.VTDNav;
 public final class SimpleVTDContext
 {
     private static final Logger log = LoggerFactory.getLogger(SimpleVTDContext.class);
-    private final Map<Class<?>, Mapper<?>> mappers;
+    private final Map<Type, Mapper<?>> mappers;
     private final VTDNav navigator;
 
     /**
@@ -30,7 +31,7 @@ public final class SimpleVTDContext
      */
     public final Map<String, Object> extras;
 
-    SimpleVTDContext(final VTDNav navigator, final Map<Class<?>, Mapper<?>> mappers)
+    SimpleVTDContext(final VTDNav navigator, final Map<Type, Mapper<?>> mappers)
     {
         this.navigator = navigator;
         this.mappers = mappers;
@@ -127,6 +128,8 @@ public final class SimpleVTDContext
         return deserialize(clazz, StringUtils.split(elementName, '/'), defaultValue);
     }
 
+    private static final String GUARD_START_CHAR = "[";
+
     private <T> T deserialize(final Class<T> clazz, final String[] elementNames, final T defaultValue)
     {
         try
@@ -139,21 +142,30 @@ public final class SimpleVTDContext
             {
                 return deserializeAttribute(clazz, StringUtils.removeStart(elementNames[0], "@"), defaultValue);
             }
-            else if(this.navigator.toElement(VTDNav.FIRST_CHILD, elementNames[0]))
+
+            final GuardedElement guardedElement = getGuard(elementNames[0]);
+
+            if(this.navigator.toElement(VTDNav.FIRST_CHILD, guardedElement.getElementName(elementNames[0])))
             {
                 try
                 {
+                    if(!checkGuard(guardedElement))
+                    {
+                        return defaultValue;
+                    }
                     if(elementNames.length == 1)
                     {
                         return doDeserialize(clazz, defaultValue);
                     }
                     return deserialize(clazz, Arrays.copyOfRange(elementNames, 1, elementNames.length), defaultValue);
+
                 }
                 finally
                 {
                     this.navigator.toElement(VTDNav.PARENT);
                 }
             }
+
         }
         catch(final Exception e)
         {
@@ -211,12 +223,20 @@ public final class SimpleVTDContext
         final Collection<T> collection = new ArrayList<T>();
         try
         {
-            if(this.navigator.toElement(VTDNav.FIRST_CHILD, elementNames[0]))
+            final GuardedElement guardedElement = getGuard(elementNames[0]);
+            final String elementName = guardedElement.getElementName(elementNames[0]);
+            
+            if(this.navigator.toElement(VTDNav.FIRST_CHILD, elementName))
             {
                 try
                 {
                     do
                     {
+                        if(!checkGuard(guardedElement))
+                        {
+                            return collection;
+                        }
+                        
                         if(elementNames.length == 1)
                         {
                             final T entity = doDeserialize(clazz, null);
@@ -229,7 +249,7 @@ public final class SimpleVTDContext
                         {
                             collection.addAll(deserializeAll(clazz, Arrays.copyOfRange(elementNames, 1, elementNames.length)));
                         }
-                    } while(this.navigator.toElement(VTDNav.NEXT_SIBLING, elementNames[0]));
+                    } while(this.navigator.toElement(VTDNav.NEXT_SIBLING, elementName));
                 }
                 finally
                 {
@@ -243,7 +263,97 @@ public final class SimpleVTDContext
         }
         return collection;
     }
+    
+    private boolean checkGuard(GuardedElement guardedElement) throws Exception
+    {
+        if(guardedElement.isGuarded)
+        {
+            boolean guardOk = false;
+            do
+            {
+                if(StringUtils.startsWith(guardedElement.guardElement, "@")) //Attribute
+                {
+                    String guardValue = deserializeAttribute(String.class, StringUtils.removeStart(guardedElement.guardElement, "@"), null);
 
+                    if((guardOk = guardedElement.expected.equals(guardValue)) == true)
+                    {
+                        break;
+                    }
+                }
+                else if(this.navigator.toElement(VTDNav.FIRST_CHILD, guardedElement.guardElement))
+                {
+                    try
+                    {
+                        do
+                        {
+                            String guardValue = doDeserialize(String.class, null);
+
+                            if((guardOk = guardedElement.expected.equals(guardValue)) == true)
+                            {
+                                break;
+                            }
+
+                        } while(this.navigator.toElement(VTDNav.NEXT_SIBLING, guardedElement.guardElement));
+                        if(guardOk)
+                            break;
+                    }
+                    finally
+                    {
+                        this.navigator.toElement(VTDNav.PARENT);
+                    }
+                }
+
+            } while(this.navigator.toElement(VTDNav.NEXT_SIBLING, guardedElement.element));
+
+            return guardOk;
+        }
+
+        return true;
+    }
+    
+    private static class GuardedElement
+    {
+        final String element;
+        final boolean isGuarded;
+        final String guardElement;
+        final String expected;
+
+        static GuardedElement noGuard = new GuardedElement(false, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY);
+
+        GuardedElement(boolean isGuarded, String element, String guardElement, String expected)
+        {
+            this.isGuarded = isGuarded;
+            this.element = element;
+            this.guardElement = guardElement;
+            this.expected = expected;
+        }
+
+        String getElementName(String elementName)
+        {
+            return this.isGuarded ? this.element : elementName;
+        }
+    }
+
+    private static GuardedElement getGuard(final String guardedElement)
+    {
+        int guardStart = guardedElement.indexOf(GUARD_START_CHAR);
+
+        if(guardStart > -1)
+        {
+            //element has guard!
+            final String element = guardedElement.substring(0, guardStart);
+            final String guard = guardedElement.substring(guardStart + 1, guardedElement.length() - 1);
+            final String parts[] = guard.split("=");
+
+            final String guardElement = parts[0];
+            final String expected = parts[1];
+
+            return new GuardedElement(true, element, guardElement, expected);
+        }
+
+        return GuardedElement.noGuard;
+    }
+    
     @SuppressWarnings("unchecked")
     private <T> T deserializeAttribute(final Class<T> clazz, final String attribute, final T defaultValue) throws Exception
     {
