@@ -4,7 +4,8 @@
     <packaging>jar</packaging>
     <version>3.0.1-SNAPSHOT</version>
     <scm>
-        <developerConnection>scm:git:ssh://git@github.com/Hitta/${artifactId}.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com/Hitta/${project.artifactId}.git</developerConnection>
+        <url>http://github.com/Hitta/${project.artifactId}</url>
     </scm>
     <parent>
         <groupId>se.hitta</groupId>
