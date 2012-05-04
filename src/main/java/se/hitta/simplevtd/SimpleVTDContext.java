@@ -102,7 +102,16 @@ public final class SimpleVTDContext
      * <person gender="m">
      *    <name>John<name>
      *    <phone type="mobile">
+     *       <areaCode>08</areaCode>
      *       <number>12345</number>
+     *    </phone>
+     *    <phone type="fixed">
+     *       <areaCode>031</areaCode>
+     *       <number>12345</number>
+     *    </phone>
+     *    <phone type="fixed">
+     *       <areaCode>08</areaCode>
+     *       <number>22345</number>
      *    </phone>
      * <person>
      * } </pre>
@@ -111,10 +120,24 @@ public final class SimpleVTDContext
      *            <ul>
      *            <li>Query the "gender" attribute: <b>"@gender"</b></li>
      *            <li>Query the "name" element: <b>"name"</b></li>
-     *            <li>Query the "type" attribute of the "phone" element:
+     *            <li>Query the "type" attribute of the first "phone" element:
      *            <b>"phone/@type"</b></li>
-     *            <li>Query the "number" element of the "phone" element:
-     *            <b>"phone/element"</b</li>
+     *            <li>Query the "number" element of the first "phone" element:
+     *            <b>"phone/element"</b></li>
+     *            </ul>
+     *            </p>
+     *            <p>
+     *            <b>Guards</b></br>
+     *            Guards can be used to ensure serialization of a certain element. A guard is expressed as: [{@code<node name>}=value]
+     *            where {@code<node name>} can be either an attribute (prefixed with '@') or the name of an element. </br>
+     *            If you have the {@link VTDNav navigator} positioned on the {@code<person>} element this is how to:
+     *            <ul>
+     *            <li>Query the first "fixed" phone:
+     *            <b>"phone[@type=fixed]"</b></li>
+     *            <li>Query the "number" element of the first "fixed" phone:
+     *            <b>"phone[@type=fixed]/number"</b></li>
+     *            <li>Query the "number" element of the first phone with areaCode=031:
+     *            <b>"phone[areaCode=031]/number"</b></li>
      *            </ul>
      *            </p>
      * @param defaultValue
@@ -197,18 +220,38 @@ public final class SimpleVTDContext
      * <person gender="m">
      *    <name>John<name>
      *    <phone type="mobile">
+     *       <areaCode>08</areaCode>
      *       <number>12345</number>
      *    </phone>
-     *    <phone type="home">
-     *       <number>54321</number>
+     *    <phone type="fixed">
+     *       <areaCode>031</areaCode>
+     *       <number>12345</number>
+     *    </phone>
+     *    <phone type="fixed">
+     *       <areaCode>08</areaCode>
+     *       <number>22345</number>
      *    </phone>
      * <person>
      * } </pre>
      * 
      *            With the {@link VTDNav navigator} positioned on the {@code<person>} and with a registered {@link Mapper mapper} for the type "Phone" the
      *            following code can be used to return
-     *            a collection with all phones:<br> {@code Collection<Phone> phones =
-     *            context.deserializeAll(Phone.class, "phone"); * }
+     *            a collection with all phones:</br>
+     *            <b>{@code Collection<Phone> phones = context.deserializeAll(Phone.class, "phone");}</b>
+     *            <p>
+     *            <b>Guards</b></br>
+     *            Guards can be used to ensure serialization of a certain element. A guard is expressed as: [{@code<node name>}=value]
+     *            where {@code<node name>} can be either an attribute (prefixed with '@') or the name of an element. </br>
+     *            If you have the {@link VTDNav navigator} positioned on the {@code<person>} element this is how to:
+     *            <ul>
+     *            <li>Retrieve all "fixed" phones:
+     *            <b>{@code context.deserializeAll(Phone.class, "phone[@type=fixed]");}</b></li>
+     *            <li>Retrieve all phones with areaCode=08:
+     *            <b>{@code context.deserializeAll(Phone.class, "phone[areaCode=08]");}</b></li>
+     *            <li>Retrieve all numbers where the areaCode=08:
+     *            <b>{@code context.deserializeAll(String.class, "phone[areaCode=08]/number");}</b></li>
+     *            </ul>
+     *            </p>
      * @return A collection containing all deserialized elements, or an empty
      *         collection if no elements was found or if an error occurred.
      * @see SimpleVTD#registerMapper
