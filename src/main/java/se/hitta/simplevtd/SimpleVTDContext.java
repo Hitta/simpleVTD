@@ -59,7 +59,20 @@ public final class SimpleVTDContext
      */
     public <T> T deserialize(final Class<T> clazz)
     {
-        return deserialize(clazz, new String[0], null);
+        return deserialize(clazz, null, new String[0], null);
+    }
+
+    /**
+     * Deserialize the text value of the current element of the {@link VTDNav
+     * navigator} into the given type. The default value will be null.
+     * 
+     * @param mapper
+     *            The {@link Mapper} to use for the deserialization
+     * @return The deserialized type
+     */
+    public <T> T deserialize(final Mapper<T> mapper)
+    {
+        return deserialize(null, mapper, new String[0], null);
     }
 
     /**
@@ -77,7 +90,24 @@ public final class SimpleVTDContext
      */
     public <T> T deserialize(final Class<T> clazz, final T defaultValue)
     {
-        return deserialize(clazz, new String[0], defaultValue);
+        return deserialize(clazz, null, new String[0], defaultValue);
+    }
+
+    /**
+     * Deserialize the text value of the current element of the {@link VTDNav
+     * navigator} into the given type.
+     * 
+     * @param mapper
+     * @param defaultValue
+     *            The default value is returned in case of
+     *            any error. This is also the value sent to the {@link Mapper}.
+     *            The {@link Mapper} to use for the deserialization
+     * @return The deserialized type or the default value (depending on the {@link Mapper} implementation)
+     * @see SimpleVTD#registerMapper
+     */
+    public <T> T deserialize(final Mapper<T> mapper, final T defaultValue)
+    {
+        return deserialize(null, mapper, new String[0], defaultValue);
     }
 
     /**
@@ -148,22 +178,40 @@ public final class SimpleVTDContext
      */
     public <T> T deserialize(final Class<T> clazz, final String elementName, final T defaultValue)
     {
-        return deserialize(clazz, StringUtils.split(elementName, '/'), defaultValue);
+        return deserialize(clazz, null, StringUtils.split(elementName, '/'), defaultValue);
+    }
+
+    /**
+     * Deserialize the given element (relative to the current {@link VTDNav
+     * navigator} position) into the given type.
+     * 
+     * @param mapper
+     *            The {@link Mapper} to use for the deserialization
+     * @param elementName
+     *            For information about the elementName parameter see: {@link #deserialize(Class, String, Object) deserialize}
+     * @param defaultValue
+     *            The default value is returned in case of
+     *            any error. This is also the value sent to the {@link Mapper}.
+     * @return The deserialized type or the default value
+     */
+    public <T> T deserialize(final Mapper<T> mapper, final String elementName, final T defaultValue)
+    {
+        return deserialize(null, mapper, StringUtils.split(elementName, '/'), defaultValue);
     }
 
     private static final String GUARD_START_CHAR = "[";
 
-    private <T> T deserialize(final Class<T> clazz, final String[] elementNames, final T defaultValue)
+    private <T> T deserialize(final Class<T> clazz, final Mapper<T> mapper, final String[] elementNames, final T defaultValue)
     {
         try
         {
             if(elementNames.length == 0)
             {
-                return doDeserialize(clazz, defaultValue);
+                return doDeserialize(clazz, mapper, defaultValue);
             }
             else if(StringUtils.startsWith(elementNames[0], "@")) //Attribute
             {
-                return deserializeAttribute(clazz, StringUtils.removeStart(elementNames[0], "@"), defaultValue);
+                return deserializeAttribute(clazz, mapper, StringUtils.removeStart(elementNames[0], "@"), defaultValue);
             }
 
             final GuardedElement guardedElement = getGuard(elementNames[0]);
@@ -178,9 +226,9 @@ public final class SimpleVTDContext
                     }
                     if(elementNames.length == 1)
                     {
-                        return doDeserialize(clazz, defaultValue);
+                        return doDeserialize(clazz, mapper, defaultValue);
                     }
-                    return deserialize(clazz, Arrays.copyOfRange(elementNames, 1, elementNames.length), defaultValue);
+                    return deserialize(clazz, mapper, Arrays.copyOfRange(elementNames, 1, elementNames.length), defaultValue);
 
                 }
                 finally
@@ -258,17 +306,33 @@ public final class SimpleVTDContext
      */
     public <T> Collection<T> deserializeAll(final Class<T> clazz, final String elementName)
     {
-        return deserializeAll(clazz, StringUtils.split(elementName, '/'));
+        return deserializeAll(clazz, null, StringUtils.split(elementName, '/'));
     }
 
-    private <T> Collection<T> deserializeAll(final Class<T> clazz, final String[] elementNames)
+    /**
+     * Deserialize the given element (relative to the current {@link VTDNav
+     * navigator} position) into the given type.
+     * 
+     * @param mapper
+     *            The {@link Mapper} to use for the deserialization
+     * @param elementName
+     *            For information about the elementName parameter see: {@link #deserializeAll(Class, String) deserializeAll}
+     * @return A collection containing all deserialized elements, or an empty
+     *         collection if no elements was found or if an error occurred.
+     */
+    public <T> Collection<T> deserializeAll(final Mapper<T> mapper, final String elementName)
+    {
+        return deserializeAll(null, mapper, StringUtils.split(elementName, '/'));
+    }
+
+    private <T> Collection<T> deserializeAll(final Class<T> clazz, final Mapper<T> mapper, final String[] elementNames)
     {
         final Collection<T> collection = new ArrayList<T>();
         try
         {
             final GuardedElement guardedElement = getGuard(elementNames[0]);
             final String elementName = guardedElement.getElementName(elementNames[0]);
-            
+
             if(this.navigator.toElement(VTDNav.FIRST_CHILD, elementName))
             {
                 try
@@ -279,10 +343,10 @@ public final class SimpleVTDContext
                         {
                             return collection;
                         }
-                        
+
                         if(elementNames.length == 1)
                         {
-                            final T entity = doDeserialize(clazz, null);
+                            final T entity = doDeserialize(clazz, mapper, null);
                             if(entity != null)
                             {
                                 collection.add(entity);
@@ -290,7 +354,7 @@ public final class SimpleVTDContext
                         }
                         else
                         {
-                            collection.addAll(deserializeAll(clazz, Arrays.copyOfRange(elementNames, 1, elementNames.length)));
+                            collection.addAll(deserializeAll(clazz, mapper, Arrays.copyOfRange(elementNames, 1, elementNames.length)));
                         }
                     } while(this.navigator.toElement(VTDNav.NEXT_SIBLING, elementName));
                 }
@@ -306,7 +370,7 @@ public final class SimpleVTDContext
         }
         return collection;
     }
-    
+
     private boolean checkGuard(GuardedElement guardedElement) throws Exception
     {
         if(guardedElement.isGuarded)
@@ -316,7 +380,7 @@ public final class SimpleVTDContext
             {
                 if(StringUtils.startsWith(guardedElement.guardElement, "@")) //Attribute
                 {
-                    String guardValue = deserializeAttribute(String.class, StringUtils.removeStart(guardedElement.guardElement, "@"), null);
+                    String guardValue = deserializeAttribute(String.class, null, StringUtils.removeStart(guardedElement.guardElement, "@"), null);
 
                     if((guardOk = guardedElement.expected.equals(guardValue)) == true)
                     {
@@ -329,7 +393,7 @@ public final class SimpleVTDContext
                     {
                         do
                         {
-                            String guardValue = doDeserialize(String.class, null);
+                            String guardValue = doDeserialize(String.class, null, null);
 
                             if((guardOk = guardedElement.expected.equals(guardValue)) == true)
                             {
@@ -353,7 +417,7 @@ public final class SimpleVTDContext
 
         return true;
     }
-    
+
     private static class GuardedElement
     {
         final String element;
@@ -396,26 +460,39 @@ public final class SimpleVTDContext
 
         return GuardedElement.noGuard;
     }
-    
+
     @SuppressWarnings("unchecked")
-    private <T> T deserializeAttribute(final Class<T> clazz, final String attribute, final T defaultValue) throws Exception
+    private <T> T deserializeAttribute(final Class<T> clazz, final Mapper<T> mapper, final String attribute, final T defaultValue) throws Exception
     {
+        if(mapper != null)
+        {
+            return mapper.deserializeAttribute(this, attribute, defaultValue);
+        }
+
         if(!this.mappers.containsKey(clazz))
         {
             throw new IllegalArgumentException("No mapper found for type: " + clazz);
         }
-        final Mapper<T> mapper = (Mapper<T>)this.mappers.get(clazz);
-        return mapper.deserializeAttribute(this, attribute, defaultValue);
+
+        final Mapper<T> registeredMapper = (Mapper<T>)this.mappers.get(clazz);
+        return registeredMapper.deserializeAttribute(this, attribute, defaultValue);
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T doDeserialize(final Class<T> clazz, final T defaultValue) throws Exception
+    private <T> T doDeserialize(final Class<T> clazz, final Mapper<T> mapper, final T defaultValue) throws Exception
     {
-        if(this.mappers.containsKey(clazz))
+        if(mapper != null)
         {
-            final Mapper<T> mapper = (Mapper<T>)this.mappers.get(clazz);
             return mapper.deserialize(this, defaultValue);
         }
-        throw new IllegalArgumentException("No mapper found for type: " + clazz);
+
+        if(!this.mappers.containsKey(clazz))
+        {
+            throw new IllegalArgumentException("No mapper found for type: " + clazz);
+        }
+
+        final Mapper<T> registeredMapper = (Mapper<T>)this.mappers.get(clazz);
+        return registeredMapper.deserialize(this, defaultValue);
+
     }
 }
