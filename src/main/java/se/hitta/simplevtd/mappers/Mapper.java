@@ -2,7 +2,6 @@ package se.hitta.simplevtd.mappers;
 
 import se.hitta.simplevtd.SimpleVTDContext;
 
-import com.ximpleware.NavException;
 import com.ximpleware.VTDNav;
 
 public abstract class Mapper<T>
@@ -22,7 +21,7 @@ public abstract class Mapper<T>
             final String raw = (val == -1) ? null : navigator.toString(val).trim();
             return (raw == null) ? defaultValue : parse(raw);
         }
-        catch(final NavException e)
+        catch(final Exception e)
         {
             return defaultValue;
         }
@@ -37,7 +36,7 @@ public abstract class Mapper<T>
             final String raw = (val == -1) ? null : navigator.toNormalizedString(val);
             return (raw == null) ? defaultValue : parse(raw);
         }
-        catch(final NavException e)
+        catch(final Exception e)
         {
             return defaultValue;
         }
