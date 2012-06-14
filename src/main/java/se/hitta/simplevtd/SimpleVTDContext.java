@@ -4,7 +4,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,13 +30,22 @@ public final class SimpleVTDContext
      */
     public final Map<String, Object> extras;
 
-    SimpleVTDContext(final VTDNav navigator, final Map<Type, Mapper<?>> mappers)
+    SimpleVTDContext(final VTDNav navigator, final Map<Type, Mapper<?>> mappers, Map<String, Object> extras)
     {
         this.navigator = navigator;
         this.mappers = mappers;
-        this.extras = new HashMap<String, Object>();
+        this.extras = extras;
     }
-
+    
+    /**
+     * Clones the context (including mappers and extras) and the underlying VTDNav instance to get with shared XML, VTD and LC buffers The node position is also copied from the original instance.
+     * 
+     */
+    @Override
+    public SimpleVTDContext clone()
+    {
+        return new SimpleVTDContext(this.navigator.cloneNav(), this.mappers, this.extras);
+    }
     /**
      * @return A {@link VTDNav} that can be used to traverse or parse the XML
      *         manually or to create an {@link AutoPilot}.

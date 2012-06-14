@@ -74,6 +74,6 @@ public final class SimpleVTD
         final VTDGen vtdGen = new VTDGen();
         vtdGen.setDoc(xml);
         vtdGen.parse(false);
-        return new SimpleVTDContext(vtdGen.getNav(), this.mappers);
+        return new SimpleVTDContext(vtdGen.getNav(), this.mappers, new HashMap<String, Object>());
     }
 }
