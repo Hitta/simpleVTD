@@ -7,7 +7,7 @@ import com.ximpleware.VTDNav;
 public abstract class Mapper<T>
 {
     @SuppressWarnings("unchecked")
-    public T parse(final String raw)
+    public T parse(final String raw, T defaultValue)
     {
         return (T)raw;
     }
@@ -19,7 +19,7 @@ public abstract class Mapper<T>
             final VTDNav navigator = context.getNavigator();
             final int val = navigator.getText();
             final String raw = (val == -1) ? null : navigator.toString(val).trim();
-            return (raw == null) ? defaultValue : parse(raw);
+            return (raw == null) ? defaultValue : parse(raw, defaultValue);
         }
         catch(final Exception e)
         {
@@ -34,7 +34,7 @@ public abstract class Mapper<T>
             final VTDNav navigator = context.getNavigator();
             final int val = navigator.getAttrVal(attribute);
             final String raw = (val == -1) ? null : navigator.toNormalizedString(val);
-            return (raw == null) ? defaultValue : parse(raw);
+            return (raw == null) ? defaultValue : parse(raw, defaultValue);
         }
         catch(final Exception e)
         {
