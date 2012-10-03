@@ -71,9 +71,23 @@ public final class SimpleVTD
      */
     public SimpleVTDContext createContext(final byte[] xml) throws Exception
     {
+        return createContext(xml, false);
+    }
+    
+    /**
+     * Create a mapping context. Note! the mapping context is not thread safe.
+     * 
+     * @param xml The XML to process as a byte array
+     * @param nsAware Enable namespace or not
+     * @return A new {@link SimpleVTDContext}
+     * @throws Exception
+     *             in case of XML parse exceptions
+     */
+    public SimpleVTDContext createContext(final byte[] xml, boolean nsAware) throws Exception
+    {
         final VTDGen vtdGen = new VTDGen();
         vtdGen.setDoc(xml);
-        vtdGen.parse(false);
+        vtdGen.parse(nsAware);
         return new SimpleVTDContext(vtdGen.getNav(), this.mappers, new HashMap<String, Object>());
     }
 }
